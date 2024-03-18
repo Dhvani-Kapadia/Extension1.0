@@ -11,7 +11,7 @@
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({flag:flag.text()})
+      body: JSON.stringify({flag})
     })
     .then(response => response.text())
     .then(result => {
