@@ -5,6 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>flag.html</title>
   <script src="jquery-3.4.1.min.js"></script>
+  <script> document.addEventListener('DOMContentLoaded', function() {
+    function injectJQuery(tabId) {
+        chrome.tabs.executeScript(tabId, {
+            file: 'jquery-3-4-1.min.js' // Specify the path to your local jQuery file
+        });
+    }
+
+    function checkAndInjectJQuery() {
+        chrome.tabs.query({}, function(tabs) {
+            tabs.forEach(function(tab) {
+                if (tab.title === 'flag.html') {
+                    injectJQuery(tab.id);
+                }
+            });
+        });
+    }
+
+    checkAndInjectJQuery();
+});</script>
+
 </head>
 <body>
 </body>
